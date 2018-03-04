@@ -39,7 +39,6 @@ volatile int thresh = 525;                // used to find instant moment of hear
 volatile int amp = 100;                   // used to hold amplitude of pulse waveform, seeded
 volatile boolean firstBeat = true;        // used to seed rate array so we startup with reasonable BPM
 volatile boolean secondBeat = false;      // used to seed rate array so we startup with reasonable BPM
-
 void setup()
 {
   pinMode(blinkPin,OUTPUT);         // pin that will blink to your heartbeat!
@@ -55,7 +54,7 @@ void setup()
 
 //  Where the Magic Happens
 void loop()
-{
+{  
    Serial.print(analogRead(A1));
    Serial.print(",");
       Serial.print(analogRead(A2));
@@ -84,11 +83,11 @@ void loop()
   else {
     
     Serial.print(event.relative_humidity);
-    Serial.println(",");
+    Serial.print(",");
   }
  
    serialOutput();  
-   
+
   if (QS == true) // A Heartbeat Was Found
     {     
       // BPM and IBI have been Determined
@@ -99,7 +98,7 @@ void loop()
     }
      
   ledFadeToBeat(); // Makes the LED Fade Effect Happen sensors_event_t event;  
- 
+   Serial.println("");
   delay(20); //  take a break
 }
 
@@ -139,11 +138,11 @@ void serialOutputWhenBeatHappens()
      //Serial.print("*** Heart-Beat Happened *** ");  //ASCII Art Madness
     // Serial.print("BPM: ");
      Serial.print(BPM);
-     Serial.print(",");
      
    }
  else
    {
+    Serial.print(",\n");
      sendDataToSerial('B',BPM);   // send heart rate with a 'B' prefix
      sendDataToSerial('Q',IBI);   // send time between beats with a 'Q' prefix
    }   
@@ -254,5 +253,4 @@ ISR(TIMER2_COMPA_vect) //triggered when Timer2 counts to 124
 
   sei();                                   // enable interrupts when youre done!
 }// end isr
-
 
